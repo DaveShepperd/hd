@@ -296,9 +296,14 @@
 			Name="Other Files"
 			Filters=""
 			GUID="{454A751D-0672-43FA-BEF8-4D47B4D5F4FA}">
+			<F N="LICENSE"/>
 			<F
 				N="Makefile"
 				Type="Makefile"/>
+			<F
+				N="Makefile.mingw"
+				Type="Makefile"/>
+			<F N="README.md"/>
 		</Folder>
 	</Files>
 	<List Name="RTE">

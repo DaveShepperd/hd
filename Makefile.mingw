@@ -1,0 +1,17 @@
+CC = gcc
+DBG = -g
+OPT = #-O2
+MACH = -m32
+WARN = -Wall
+STD = -std=c99
+STRICT = -ansi #-pedantic # (can't use pedantic on MinGW)
+CFLAGS = $(DBG) $(OPT) $(MACH) $(WARN) $(STD) $(STRICT)
+
+.SILENT:
+
+hd: hd.c Makefile
+	$(CC) $(CFLAGS) -o $@ $<
+	
+clean: Makefile
+	rm -rf Debug Release hd
+

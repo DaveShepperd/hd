@@ -335,15 +335,17 @@ static int helpEm(FILE *ofp)
 {
 	fprintf(ofp,"Usage: hd [-bhwB?] [--head=n] [--tail=n] [--skip=n] file [... file]" EOLSTR
 		   "where:\n"
-		   " --bytes  or -b   print in bytes (default)" EOLSTR
-		   " --shorts or -h   print in halfwords (16 bits)" EOLSTR
-		   " --longs  or -w   print in words (32 bits)" EOLSTR
-		   " --big    or -B   print assuming Big Endian" EOLSTR
-		   " --head=n         print only 'n' leading lines" EOLSTR
-		   " --tail=n         print only 'n' last lines" EOLSTR
-		   " --skip=n         first skip 'n' bytes on all inputs" EOLSTR
-		   " --wide   or -W   set number of columns to 32. (Default is 16.)" EOLSTR
-		   " --help   or -?   this message" EOLSTR
+		   "--bytes  or -b   print in bytes (default)" EOLSTR
+		   "--shorts or -h   print in halfwords (16 bits)" EOLSTR
+		   "--longs  or -w   print in words (32 bits)" EOLSTR
+		   "--big    or -B   print assuming Big Endian" EOLSTR
+		   "--head=n or -Hn  print only 'n' leading lines" EOLSTR
+		   "--tail=n or -Tm  print only 'n' last lines" EOLSTR
+		   "--skip=n or -Sn  first skip 'n' bytes on all inputs" EOLSTR
+		   "--wide   or -W   set number of columns to 32. (Default is 16.)" EOLSTR
+		   "--out=file       reassign stdout to 'file'" EOLSTR
+		   "--err=file       reassign stderr to 'file'" EOLSTR
+		   "--help   or -?   this message" EOLSTR
 		  );
 	return 1;
 }
@@ -381,8 +383,8 @@ int main(int argc, char *argv[])
 		{ "wide", no_argument, NULL, OPT_WIDE },
 		{ "tail", required_argument, NULL, OPT_TAIL },
 		{ "skip", required_argument, NULL, OPT_SKIP },
-		{ "stdout", required_argument, NULL, OPT_STDOUT },
-		{ "stderr", required_argument, NULL, OPT_STDERR },
+		{ "out", required_argument, NULL, OPT_STDOUT },
+		{ "err", required_argument, NULL, OPT_STDERR },
 		{ NULL, 0, NULL, 0 }
 	};
 
@@ -393,7 +395,7 @@ int main(int argc, char *argv[])
 		int cc;
 
 		opterr = 0;
-		cc = getopt_long(argc, argv, "?bBhwW", longOpts, NULL);
+		cc = getopt_long(argc, argv, "?bBhH:S:T:wW", longOpts, NULL);
 
 		if ( cc == -1 )
 			break;
@@ -417,6 +419,7 @@ int main(int argc, char *argv[])
 			opts.format = 4;
 			break;
 		case OPT_HEAD:
+		case 'H':
 			endp = NULL;
 			opts.head = strtol(optarg, &endp, 0);
 			if ( !endp || *endp || opts.head <= 0 )
@@ -426,6 +429,7 @@ int main(int argc, char *argv[])
 			}
 			break;
 		case OPT_TAIL:
+		case 'T':
 			endp = NULL;
 			opts.tail = strtol(optarg, &endp, 0);
 			if ( !endp || *endp || opts.tail <= 0 )
@@ -435,6 +439,7 @@ int main(int argc, char *argv[])
 			}
 			break;
 		case OPT_SKIP:
+		case 'S':
 			endp = NULL;
 			opts.skip = strtoll(optarg, &endp, 0);
 			if ( !endp || *endp || opts.skip < 0 )
