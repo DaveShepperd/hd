@@ -47,6 +47,7 @@ typedef struct
 	char **tailArray;   /* Pointer to array of pointers */
 	int numTails;       /* Total number of entries in array */
 	int inIndex;        /* Index to next entry to insert */
+	int tailsRecorded;	/* Number of tails recorded so far */
 	int numHeads;       /* flag indicatinng there's a head count */
 	int head;           /* Number of records output so far */
 	int skipToEnd;      /* bool indicating to skip to end of file */
@@ -93,6 +94,7 @@ static int recordString(FILE *ofp, Tail_t *tailPtr, const char *msg)
 		++tailPtr->inIndex;             /* count it */
 		if ( tailPtr->inIndex >= tailPtr->numTails ) /* make the count modulo the amount wanted */
 			tailPtr->inIndex = 0;
+		++tailPtr->tailsRecorded;
 	}
 	return 0;       /* keep saving more tail strings */
 }
@@ -138,9 +140,8 @@ void dump_bytes(FILE *ofp, FILE *ifp, CmdOptions_t *opts)
 		sts = fread(newBuf, 1, bufSize, ifp);
 		if ( lineCnt && sts == bufSize && memcmp(oldBuf, newBuf, bufSize) == 0 )
 		{
-			if ( !tails.numHeads || tails.head > 1 )
+			if ( !tails.numHeads || tails.tailsRecorded || (tails.numHeads && dups < tails.head-1) )
 			{
-				--tails.head;
 				++dups;
 				continue;
 			}
