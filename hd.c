@@ -429,8 +429,8 @@ int main(int argc, char *argv[])
 			opts.head = strtol(optarg, &endp, 0);
 			if ( !endp || *endp || opts.head <= 0 )
 			{
-				fprintf(opts.ourStdErr, "Invalid --head option: %s" EOLSTR, optarg);
-				return helpEm(opts.ourStdErr);
+				fprintf(stderr, "Invalid --head option: %s" EOLSTR, optarg);
+				return helpEm(stderr);
 			}
 			break;
 		case OPT_TAIL:
@@ -439,8 +439,8 @@ int main(int argc, char *argv[])
 			opts.tail = strtol(optarg, &endp, 0);
 			if ( !endp || *endp || opts.tail <= 0 )
 			{
-				fprintf(opts.ourStdErr, "Invalid --tail option: %s" EOLSTR, optarg);
-				return helpEm(opts.ourStdErr);
+				fprintf(stderr, "Invalid --tail option: %s" EOLSTR, optarg);
+				return helpEm(stderr);
 			}
 			break;
 		case OPT_SKIP:
@@ -449,8 +449,8 @@ int main(int argc, char *argv[])
 			opts.skip = strtoll(optarg, &endp, 0);
 			if ( !endp || *endp || opts.skip < 0 )
 			{
-				fprintf(opts.ourStdErr, "Invalid --skip option: %s" EOLSTR, optarg);
-				return helpEm(opts.ourStdErr);
+				fprintf(stderr, "Invalid --skip option: %s" EOLSTR, optarg);
+				return helpEm(stderr);
 			}
 			break;
 		case OPT_WIDE:
@@ -465,7 +465,7 @@ int main(int argc, char *argv[])
 			break;
 		case '?':
 		default:
-			return helpEm(opts.ourStdErr);
+			return helpEm(stderr);
 		}
 	}
 	if ( stdOutName )
