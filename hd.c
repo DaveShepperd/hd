@@ -138,14 +138,18 @@ void dump_bytes(FILE *ofp, FILE *ifp, CmdOptions_t *opts)
 		sts = fread(newBuf, 1, bufSize, ifp);
 		if ( lineCnt && sts == bufSize && memcmp(oldBuf, newBuf, bufSize) == 0 )
 		{
-			++dups;
-			continue;
+			if ( !tails.numHeads || tails.head > 1 )
+			{
+				--tails.head;
+				++dups;
+				continue;
+			}
 		}
 		if ( dups )
 		{
-			if ( (opts->start - bufSize) >= 0x10000LL )
+			if ( opts->fileSize >= 0x10000LL || (opts->start - bufSize) >= 0x10000LL )
 			{
-				if ( (opts->start - bufSize) >= 0x100000000LL  )
+				if ( opts->fileSize >= 0x100000000LL || (opts->start - bufSize) >= 0x100000000LL  )
 				{
 					if ( dups > 1 )
 						recordString(ofp, &tails, "****************" EOLSTR);
