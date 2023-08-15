@@ -5,7 +5,8 @@ I wrote this little tool over 30 years ago. Used mainly on Linux nearly daily ev
 Before uploading to github, I added a --head, --tail (and --wide) options so it would be
 more useful on Windows when built with MinGW32. This because Windows (XP,7,10) doesn't have
 much in the way of redirects nor head nor tail nor less (although it does have more that can
-be piped, at least on W10). I can't speak to Windows11 (yet). The Makefile is for Linux.
+be piped, at least on W10). I can't speak to Windows11 (yet). The Makefile is for Linux and
+Makefile.mingw is for MinGW32-make.
 
 <pre>
 Usage: hd [-bhwB?] [--head=n] [--tail=n] [--skip=n] file [... file]
