@@ -9,9 +9,9 @@ CFLAGS = $(DBG) $(OPT) $(MACH) $(WARN) $(STD) $(STRICT)
 
 .SILENT:
 
-hd: hd.c Makefile
+hd: hd.c Makefile.mingw
 	$(CC) $(CFLAGS) -o $@ $<
 	
 clean: Makefile
-	rm -rf Debug Release hd
+	del hd.exe
 
